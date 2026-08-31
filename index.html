@@ -3,212 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Timestamp Overlay</title>
+<title>Timestamp Generator</title>
 <style>
   :root{
-    --bg: #14140f;
-    --panel: #1c1c16;
-    --panel-2: #232319;
-    --amber: #ffb000;
-    --amber-dim: #b87f00;
-    --text: #e8e3d3;
-    --text-dim: #8a8578;
-    --border: #333026;
+    --bg:#101014;
+    --panel:#17171d;
+    --panel-2:#1f1f27;
+    --accent:#f5c518;
+    --accent-dim:#a88a11;
+    --text:#e7e7ea;
+    --text-dim:#83838f;
+    --border:#2c2c36;
   }
   *{box-sizing:border-box;}
   body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Courier New', monospace;
-    min-height:100vh;
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
-  header{
-    padding:20px 24px 16px;
-    border-bottom:1px solid var(--border);
-  }
-  header .brand{
-    display:flex;
-    align-items:baseline;
-    gap:10px;
-  }
-  header .dot{
-    width:10px;height:10px;border-radius:50%;
-    background:var(--amber);
-    box-shadow:0 0 8px var(--amber);
-  }
-  header h1{
-    font-size:18px;
-    letter-spacing:3px;
-    margin:0;
-    font-weight:700;
-    text-transform:uppercase;
-  }
-  header p{
-    margin:4px 0 0 20px;
-    font-size:12px;
-    color:var(--text-dim);
-    letter-spacing:1px;
-  }
-  .layout{
-    display:grid;
-    grid-template-columns: 320px 1fr;
-    gap:0;
-    min-height:calc(100vh - 78px);
-  }
-  @media (max-width: 800px){
-    .layout{grid-template-columns:1fr;}
-  }
+  header{padding:18px 22px;border-bottom:1px solid var(--border);}
+  header h1{margin:0;font-size:16px;letter-spacing:.5px;font-weight:600;}
+  header h1 span{color:var(--accent);}
+  header p{margin:3px 0 0;font-size:12px;color:var(--text-dim);}
+
+  .layout{display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 66px);}
+  @media(max-width:860px){.layout{grid-template-columns:1fr;}}
+
   .panel{
-    background:var(--panel);
-    padding:20px;
-    border-right:1px solid var(--border);
-    display:flex;
-    flex-direction:column;
-    gap:18px;
+    background:var(--panel);padding:20px;border-right:1px solid var(--border);
+    display:flex;flex-direction:column;gap:16px;
   }
   .field label{
-    display:block;
-    font-size:11px;
-    letter-spacing:2px;
-    color:var(--amber-dim);
-    text-transform:uppercase;
-    margin-bottom:8px;
+    display:block;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;
+    color:var(--accent-dim);margin-bottom:7px;font-weight:600;
   }
   .drop{
-    border:1px dashed var(--border);
-    background:var(--panel-2);
-    padding:24px 12px;
-    text-align:center;
-    cursor:pointer;
-    font-size:12px;
-    color:var(--text-dim);
-    transition: border-color .15s ease, color .15s ease;
+    border:1.5px dashed var(--border);background:var(--panel-2);
+    padding:22px 12px;text-align:center;cursor:pointer;border-radius:8px;
+    font-size:13px;color:var(--text-dim);transition:.15s;
   }
-  .drop:hover, .drop.drag{
-    border-color:var(--amber);
-    color:var(--amber);
-  }
+  .drop:hover,.drop.drag{border-color:var(--accent);color:var(--accent);}
   input[type=file]{display:none;}
-  .seg{
-    display:flex;
-    border:1px solid var(--border);
-    overflow:hidden;
-  }
+
+  .seg{display:flex;border:1px solid var(--border);border-radius:7px;overflow:hidden;}
   .seg button{
-    flex:1;
-    background:var(--panel-2);
-    color:var(--text-dim);
-    border:none;
-    padding:10px 6px;
-    font-family:inherit;
-    font-size:11px;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    cursor:pointer;
+    flex:1;background:var(--panel-2);color:var(--text-dim);border:none;
+    padding:9px 6px;font:inherit;font-size:12px;cursor:pointer;
   }
-  .seg button.active{
-    background:var(--amber);
-    color:#1a1204;
-    font-weight:700;
+  .seg button.active{background:var(--accent);color:#1a1500;font-weight:600;}
+
+  input[type=date],input[type=time],textarea,select{
+    width:100%;background:var(--panel-2);border:1px solid var(--border);
+    color:var(--text);font:inherit;font-size:13px;padding:9px;border-radius:6px;
   }
-  input[type=date], input[type=time], input[type=range]{
-    width:100%;
-    background:var(--panel-2);
-    border:1px solid var(--border);
-    color:var(--text);
-    font-family:inherit;
-    padding:8px;
-    font-size:13px;
-  }
+  textarea{resize:vertical;min-height:60px;line-height:1.4;}
+  input[type=range]{width:100%;accent-color:var(--accent);}
   input[type=color]{
-    width:100%;
-    height:38px;
-    background:var(--panel-2);
-    border:1px solid var(--border);
-    padding:2px;
-    cursor:pointer;
+    width:100%;height:36px;background:var(--panel-2);
+    border:1px solid var(--border);border-radius:6px;padding:2px;cursor:pointer;
   }
-  .row{display:flex; gap:10px;}
-  .row > div{flex:1;}
-  .hint{font-size:11px;color:var(--text-dim);margin-top:6px;}
-  .status{
-    font-size:11px;
-    padding:8px 10px;
-    border-left:2px solid var(--amber);
-    background:var(--panel-2);
-    color:var(--text-dim);
-    display:none;
-  }
-  .status.show{display:block;}
-  .stage{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:32px;
-    background:
-      repeating-conic-gradient(#1a1a14 0% 25%, #171712 0% 50%) 50% / 24px 24px;
-  }
-  .canvas-wrap{
-    max-width:100%;
-    box-shadow:0 20px 60px rgba(0,0,0,.5);
-  }
-  canvas{
-    display:block;
-    max-width:100%;
-    height:auto;
-    background:#000;
-  }
-  .placeholder{
-    color:var(--text-dim);
-    font-size:13px;
-    text-align:center;
-    letter-spacing:1px;
-  }
+  .row{display:flex;gap:9px;}
+  .row>div{flex:1;}
+  .hint{font-size:11px;color:var(--text-dim);margin-top:6px;line-height:1.4;}
+
   .btn{
-    background:var(--amber);
-    color:#1a1204;
-    border:none;
-    padding:12px;
-    font-family:inherit;
-    font-weight:700;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    font-size:12px;
-    cursor:pointer;
+    background:var(--accent);color:#1a1500;border:none;padding:12px;
+    font:inherit;font-weight:700;font-size:13px;border-radius:7px;cursor:pointer;
   }
-  .btn:disabled{
-    background:var(--panel-2);
-    color:var(--text-dim);
-    cursor:not-allowed;
+  .btn:disabled{background:var(--panel-2);color:var(--text-dim);cursor:not-allowed;}
+  .btn:hover:not(:disabled){filter:brightness(1.08);}
+
+  .stage{
+    display:flex;align-items:center;justify-content:center;padding:28px;
+    background:repeating-conic-gradient(#15151a 0% 25%,#131318 0% 50%) 50%/22px 22px;
   }
-  .btn:hover:not(:disabled){filter:brightness(1.1);}
+  .canvas-wrap{max-width:100%;box-shadow:0 18px 50px rgba(0,0,0,.55);}
+  canvas{display:block;max-width:100%;max-height:75vh;height:auto;background:#000;}
+  .placeholder{color:var(--text-dim);font-size:13px;}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="brand">
-    <span class="dot"></span>
-    <h1>Timestamp Overlay</h1>
-  </div>
-  <p>tempel tanggal &amp; jam ke foto — gaya digital camera</p>
+  <h1>Timestamp <span>Generator</span></h1>
+  <p>Tempel jam, tanggal, dan lokasi ke foto</p>
 </header>
 
 <div class="layout">
   <div class="panel">
 
     <div class="field">
-      <label>01 — Upload Foto</label>
-      <div class="drop" id="dropZone">
-        Klik atau drag foto ke sini<br>
-        <span class="hint">JPG / PNG</span>
-      </div>
+      <label>Foto</label>
+      <div class="drop" id="dropZone">Klik atau drag foto ke sini<div class="hint">JPG / PNG</div></div>
       <input type="file" id="fileInput" accept="image/*">
     </div>
 
     <div class="field">
-      <label>02 — Sumber Timestamp</label>
+      <label>Sumber Waktu</label>
       <div class="seg">
         <button id="modeExif" class="active">EXIF Foto</button>
         <button id="modeManual">Manual</button>
@@ -216,258 +106,312 @@
       <div class="hint" id="exifStatus">Upload foto dulu untuk baca EXIF.</div>
     </div>
 
-    <div class="field" id="manualFields" style="display:none;">
-      <label>03 — Tanggal &amp; Jam</label>
+    <div class="field">
+      <label>Tanggal &amp; Jam</label>
       <div class="row">
         <div><input type="date" id="dateInput"></div>
-        <div><input type="time" id="timeInput" step="1"></div>
+        <div><input type="time" id="timeInput"></div>
       </div>
     </div>
 
     <div class="field">
-      <label>Ukuran Teks</label>
-      <input type="range" id="sizeInput" min="12" max="72" value="28">
+      <label>Bahasa Tanggal</label>
+      <select id="langInput">
+        <option value="en">English — Mon, 31 Aug 2026</option>
+        <option value="id">Indonesia — Sen, 31 Agu 2026</option>
+      </select>
     </div>
 
     <div class="field">
-      <label>Warna Teks</label>
-      <input type="color" id="colorInput" value="#ffb000">
+      <label>Alamat / Lokasi</label>
+      <textarea id="addrInput" placeholder="RT.7/RW.1, Cipayung, East Jakarta City, Jakarta 13840"></textarea>
+      <div class="hint">Otomatis wrap ke baris baru kalau kepanjangan.</div>
     </div>
 
-    <div class="status" id="statusBox"></div>
+    <div class="field">
+      <label>Ukuran Overlay</label>
+      <input type="range" id="scaleInput" min="60" max="160" value="100">
+    </div>
+
+    <div class="field">
+      <label>Warna Garis Pembatas</label>
+      <input type="color" id="accentInput" value="#f5c518">
+    </div>
 
     <button class="btn" id="downloadBtn" disabled>Download Hasil</button>
   </div>
 
   <div class="stage">
     <div class="canvas-wrap" id="canvasWrap">
-      <div class="placeholder">belum ada foto</div>
+      <div class="placeholder">Belum ada foto</div>
     </div>
   </div>
 </div>
 
 <script>
-const fileInput = document.getElementById('fileInput');
-const dropZone = document.getElementById('dropZone');
-const canvasWrap = document.getElementById('canvasWrap');
-const modeExifBtn = document.getElementById('modeExif');
-const modeManualBtn = document.getElementById('modeManual');
-const manualFields = document.getElementById('manualFields');
-const exifStatus = document.getElementById('exifStatus');
-const dateInput = document.getElementById('dateInput');
-const timeInput = document.getElementById('timeInput');
-const sizeInput = document.getElementById('sizeInput');
-const colorInput = document.getElementById('colorInput');
-const downloadBtn = document.getElementById('downloadBtn');
-const statusBox = document.getElementById('statusBox');
+const $ = id => document.getElementById(id);
+const fileInput=$('fileInput'), dropZone=$('dropZone'), canvasWrap=$('canvasWrap');
+const modeExifBtn=$('modeExif'), modeManualBtn=$('modeManual'), exifStatus=$('exifStatus');
+const dateInput=$('dateInput'), timeInput=$('timeInput'), langInput=$('langInput');
+const addrInput=$('addrInput'), scaleInput=$('scaleInput'), accentInput=$('accentInput');
+const downloadBtn=$('downloadBtn');
 
-let img = null;
-let canvas = null;
-let ctx = null;
-let mode = 'exif'; // 'exif' | 'manual'
-let exifDateStr = null; // formatted string already, or null
+let img=null, canvas=null, ctx=null, mode='exif', exifDate=null;
 
-function showStatus(msg){
-  statusBox.textContent = msg;
-  statusBox.classList.add('show');
-}
+const DAYS = {
+  en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+  id:['Min','Sen','Sel','Rab','Kam','Jum','Sab']
+};
+const MONTHS = {
+  en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  id:['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des']
+};
 
-// ---------- EXIF PARSER (manual, JPEG only) ----------
-function getStringFromDataView(view, start, length){
-  let str = '';
-  for (let i = 0; i < length; i++) str += String.fromCharCode(view.getUint8(start + i));
-  return str;
-}
-
-function readIFD(view, tiffOffset, ifdOffset, little){
-  const result = {};
-  const numEntries = view.getUint16(ifdOffset, little);
-  for (let i = 0; i < numEntries; i++){
-    const entryOffset = ifdOffset + 2 + i * 12;
-    const tag = view.getUint16(entryOffset, little);
-    const type = view.getUint16(entryOffset + 2, little);
-    const count = view.getUint32(entryOffset + 4, little);
-    if (type === 2 && count > 0){ // ASCII
-      let valueOffset;
-      if (count <= 4){
-        valueOffset = entryOffset + 8;
-      } else {
-        valueOffset = tiffOffset + view.getUint32(entryOffset + 8, little);
-      }
-      let str = '';
-      for (let j = 0; j < count - 1; j++){
-        str += String.fromCharCode(view.getUint8(valueOffset + j));
-      }
-      result[tag] = str;
-    } else if (type === 4 && count === 1){ // LONG, used for IFD pointers
-      result[tag] = view.getUint32(entryOffset + 8, little);
+/* ---------- EXIF parser (JPEG APP1) ---------- */
+function readIFD(view, tiff, ifd, little){
+  const out={};
+  const n=view.getUint16(ifd, little);
+  for(let i=0;i<n;i++){
+    const e=ifd+2+i*12;
+    const tag=view.getUint16(e,little), type=view.getUint16(e+2,little), count=view.getUint32(e+4,little);
+    if(type===2 && count>0){
+      const off = count<=4 ? e+8 : tiff+view.getUint32(e+8,little);
+      let s='';
+      for(let j=0;j<count-1;j++) s+=String.fromCharCode(view.getUint8(off+j));
+      out[tag]=s;
+    } else if(type===4 && count===1){
+      out[tag]=view.getUint32(e+8,little);
     }
   }
-  return result;
+  return out;
 }
-
-function parseExifDateFromArrayBuffer(buffer){
-  try {
-    const view = new DataView(buffer);
-    if (view.getUint16(0, false) !== 0xFFD8) return null; // not a JPEG
-    let offset = 2;
-    const length = view.byteLength;
-    while (offset < length - 1){
-      if (view.getUint8(offset) !== 0xFF) break;
-      const marker = view.getUint8(offset + 1);
-      if (marker === 0xE1){
-        const start = offset + 4;
-        if (getStringFromDataView(view, start, 4) !== 'Exif') return null;
-        const tiffOffset = start + 6;
-        const little = view.getUint16(tiffOffset, false) === 0x4949;
-        const firstIFDOffset = view.getUint32(tiffOffset + 4, little);
-        const ifd0 = readIFD(view, tiffOffset, tiffOffset + firstIFDOffset, little);
-        let dateStr = null;
-        if (ifd0[0x8769]){
-          const exifIFD = readIFD(view, tiffOffset, tiffOffset + ifd0[0x8769], little);
-          dateStr = exifIFD[0x9003] || exifIFD[0x9004] || null;
+function parseExifDate(buffer){
+  try{
+    const view=new DataView(buffer);
+    if(view.getUint16(0,false)!==0xFFD8) return null;
+    let offset=2;
+    while(offset<view.byteLength-1){
+      if(view.getUint8(offset)!==0xFF) break;
+      const marker=view.getUint8(offset+1);
+      if(marker===0xE1){
+        const start=offset+4;
+        let sig='';
+        for(let i=0;i<4;i++) sig+=String.fromCharCode(view.getUint8(start+i));
+        if(sig!=='Exif') return null;
+        const tiff=start+6;
+        const little=view.getUint16(tiff,false)===0x4949;
+        const ifd0=readIFD(view,tiff,tiff+view.getUint32(tiff+4,little),little);
+        if(ifd0[0x8769]){
+          const sub=readIFD(view,tiff,tiff+ifd0[0x8769],little);
+          return sub[0x9003]||sub[0x9004]||null;
         }
-        if (!dateStr) dateStr = ifd0[0x0132] || null;
-        return dateStr; // format "YYYY:MM:DD HH:MM:SS"
-      } else if (marker === 0xD8 || (marker >= 0xD0 && marker <= 0xD9)){
-        offset += 2;
-      } else {
-        offset += 2 + view.getUint16(offset + 2, false);
+        return ifd0[0x0132]||null;
       }
+      offset += (marker>=0xD0 && marker<=0xD9) ? 2 : 2+view.getUint16(offset+2,false);
     }
-  } catch(e){ /* fall through */ }
+  }catch(e){}
   return null;
 }
 
-function formatExifString(raw){
-  // raw: "YYYY:MM:DD HH:MM:SS" -> "DD/MM/YYYY HH:MM:SS"
-  const m = raw.match(/(\d{4}):(\d{2}):(\d{2})\s(\d{2}):(\d{2}):(\d{2})/);
-  if (!m) return raw;
-  const [, y, mo, d, h, mi, s] = m;
-  return `${d}/${mo}/${y} ${h}:${mi}:${s}`;
-}
-
-// ---------- FILE HANDLING ----------
-dropZone.addEventListener('click', () => fileInput.click());
-dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag'); });
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
-dropZone.addEventListener('drop', e => {
-  e.preventDefault();
-  dropZone.classList.remove('drag');
-  if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
-});
-fileInput.addEventListener('change', e => {
-  if (e.target.files.length) handleFile(e.target.files[0]);
-});
+/* ---------- File handling ---------- */
+dropZone.onclick = () => fileInput.click();
+dropZone.ondragover = e => { e.preventDefault(); dropZone.classList.add('drag'); };
+dropZone.ondragleave = () => dropZone.classList.remove('drag');
+dropZone.ondrop = e => {
+  e.preventDefault(); dropZone.classList.remove('drag');
+  if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+};
+fileInput.onchange = e => { if(e.target.files.length) handleFile(e.target.files[0]); };
 
 function handleFile(file){
-  if (!file.type.startsWith('image/')) return;
+  if(!file.type.startsWith('image/')) return;
+  const reader=new FileReader();
+  reader.onload = e => {
+    const buf = e.target.result;
+    const raw = parseExifDate(buf.slice(0));
+    exifDate = null;
 
-  const reader = new FileReader();
-  reader.onload = function(e){
-    const arrayBuffer = e.target.result;
-    const raw = parseExifDateFromArrayBuffer(arrayBuffer.slice(0));
-    exifDateStr = raw ? formatExifString(raw) : null;
-
-    if (exifDateStr){
-      exifStatus.textContent = `EXIF ditemukan: ${exifDateStr}`;
-    } else {
-      exifStatus.textContent = 'EXIF tidak ditemukan di foto ini — pakai mode Manual.';
+    if(raw){
+      const m = raw.match(/(\d{4}):(\d{2}):(\d{2})\s(\d{2}):(\d{2})/);
+      if(m){
+        exifDate = new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]);
+        exifStatus.textContent = 'EXIF ditemukan: ' + raw;
+        dateInput.value = `${m[1]}-${m[2]}-${m[3]}`;
+        timeInput.value = `${m[4]}:${m[5]}`;
+      }
+    }
+    if(!exifDate){
+      exifStatus.textContent = 'EXIF tidak ada di foto ini — pakai mode Manual.';
+      const now=new Date();
+      if(!dateInput.value) dateInput.value = now.toISOString().slice(0,10);
+      if(!timeInput.value) timeInput.value = now.toTimeString().slice(0,5);
+      mode='manual'; setMode();
     }
 
-    const blob = new Blob([arrayBuffer]);
-    const url = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(new Blob([buf]));
     const image = new Image();
-    image.onload = function(){
-      img = image;
-      setupCanvas();
-      draw();
-      URL.revokeObjectURL(url);
-    };
+    image.onload = () => { img=image; setupCanvas(); draw(); URL.revokeObjectURL(url); };
     image.src = url;
   };
   reader.readAsArrayBuffer(file);
-
-  // set default manual date to now
-  const now = new Date();
-  dateInput.value = now.toISOString().slice(0,10);
-  timeInput.value = now.toTimeString().slice(0,8);
 }
 
 function setupCanvas(){
-  canvasWrap.innerHTML = '';
-  canvas = document.createElement('canvas');
-  canvas.width = img.naturalWidth;
-  canvas.height = img.naturalHeight;
-  ctx = canvas.getContext('2d');
+  canvasWrap.innerHTML='';
+  canvas=document.createElement('canvas');
+  canvas.width=img.naturalWidth; canvas.height=img.naturalHeight;
+  ctx=canvas.getContext('2d');
   canvasWrap.appendChild(canvas);
-  downloadBtn.disabled = false;
+  downloadBtn.disabled=false;
 }
 
-function getTimestampText(){
-  if (mode === 'exif' && exifDateStr){
-    return exifDateStr;
+function currentDate(){
+  if(mode==='exif' && exifDate) return exifDate;
+  if(!dateInput.value) return null;
+  const [y,mo,d]=dateInput.value.split('-').map(Number);
+  const [h,mi]=(timeInput.value||'00:00').split(':').map(Number);
+  return new Date(y,mo-1,d,h,mi);
+}
+
+function wrapText(ctx, text, maxWidth){
+  const words=text.split(' '), lines=[];
+  let line='';
+  for(const w of words){
+    const test = line ? line+' '+w : w;
+    if(ctx.measureText(test).width > maxWidth && line){ lines.push(line); line=w; }
+    else line=test;
   }
-  // manual (or exif fallback)
-  const d = dateInput.value;
-  const t = timeInput.value || '00:00:00';
-  if (!d) return '';
-  const [y, mo, da] = d.split('-');
-  return `${da}/${mo}/${y} ${t}`;
+  if(line) lines.push(line);
+  return lines;
 }
 
+/* ---------- Draw overlay ---------- */
 function draw(){
-  if (!img || !ctx) return;
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  if(!img||!ctx) return;
+  ctx.drawImage(img,0,0,canvas.width,canvas.height);
 
-  const text = getTimestampText();
-  if (!text) return;
+  const d = currentDate();
+  if(!d) return;
 
-  const fontSize = Math.max(12, parseInt(sizeInput.value, 10)) * (canvas.width / 900);
-  const color = colorInput.value;
-  const padding = fontSize * 0.7;
+  const lang = langInput.value;
+  const scale = (scaleInput.value/100) * (canvas.width/1200);
+  const accent = accentInput.value;
 
-  ctx.font = `700 ${fontSize}px 'Courier New', monospace`;
-  ctx.textBaseline = 'bottom';
-  ctx.textAlign = 'right';
-  ctx.shadowColor = 'rgba(0,0,0,0.75)';
-  ctx.shadowBlur = fontSize * 0.25;
-  ctx.shadowOffsetX = 1;
-  ctx.shadowOffsetY = 1;
-  ctx.fillStyle = color;
-  ctx.fillText(text, canvas.width - padding, canvas.height - padding);
+  const pad     = 40*scale;
+  const timeF   = 92*scale;   // jam besar
+  const dateF   = 34*scale;
+  const addrF   = 33*scale;
+  const gap     = 14*scale;
 
-  ctx.shadowColor = 'transparent';
+  const timeStr = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  const dateStr = `${d.getDate()} ${MONTHS[lang][d.getMonth()]} ${d.getFullYear()}`;
+  const dayStr  = DAYS[lang][d.getDay()];
+  const addr    = addrInput.value.trim();
+
+  // ukur tinggi blok alamat
+  ctx.font = `500 ${addrF}px -apple-system, "Segoe UI", Roboto, sans-serif`;
+  const addrLines = addr ? wrapText(ctx, addr, canvas.width - pad*2) : [];
+  const addrLineH = addrF*1.28;
+
+  const timeBlockH = timeF*1.05;
+  const addrBlockH = addrLines.length ? addrLines.length*addrLineH + gap : 0;
+  const rulePad    = gap*1.4;
+  const blockH     = timeBlockH + addrBlockH + rulePad + pad;
+
+  // scrim gelap biar teks kebaca
+  const scrimTop = canvas.height - blockH - pad*0.8;
+  const grad = ctx.createLinearGradient(0, scrimTop, 0, canvas.height);
+  grad.addColorStop(0,'rgba(0,0,0,0)');
+  grad.addColorStop(1,'rgba(0,0,0,0.62)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, scrimTop, canvas.width, canvas.height - scrimTop);
+
+  ctx.textAlign='left';
+  ctx.shadowColor='rgba(0,0,0,0.55)';
+  ctx.shadowBlur=6*scale;
+
+  let y = canvas.height - pad;
+
+  // garis pembatas horizontal (paling bawah)
+  ctx.shadowBlur=0;
+  ctx.strokeStyle='rgba(255,255,255,0.45)';
+  ctx.lineWidth=Math.max(1, 1.6*scale);
+  ctx.beginPath();
+  ctx.moveTo(pad, y);
+  ctx.lineTo(canvas.width - pad, y);
+  ctx.stroke();
+  ctx.shadowColor='rgba(0,0,0,0.55)';
+  ctx.shadowBlur=6*scale;
+
+  y -= rulePad;
+
+  // alamat (dari bawah ke atas)
+  if(addrLines.length){
+    ctx.font = `500 ${addrF}px -apple-system, "Segoe UI", Roboto, sans-serif`;
+    ctx.fillStyle='#ffffff';
+    ctx.textBaseline='alphabetic';
+    for(let i=addrLines.length-1;i>=0;i--){
+      ctx.fillText(addrLines[i], pad, y);
+      y -= addrLineH;
+    }
+    y -= gap*0.3;
+  }
+
+  // jam besar
+  ctx.font = `700 ${timeF}px -apple-system, "Segoe UI", Roboto, sans-serif`;
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#ffffff';
+  const timeBaseline = y;
+  ctx.fillText(timeStr, pad, timeBaseline);
+  const timeW = ctx.measureText(timeStr).width;
+
+  // garis pembatas vertikal
+  const dividerX = pad + timeW + gap*1.6;
+  const divTop = timeBaseline - timeF*0.80;
+  const divBot = timeBaseline + timeF*0.06;
+  ctx.shadowBlur=0;
+  ctx.strokeStyle=accent;
+  ctx.lineWidth=Math.max(2, 5*scale);
+  ctx.beginPath();
+  ctx.moveTo(dividerX, divTop);
+  ctx.lineTo(dividerX, divBot);
+  ctx.stroke();
+  ctx.shadowColor='rgba(0,0,0,0.55)';
+  ctx.shadowBlur=6*scale;
+
+  // tanggal + hari di kanan divider
+  const textX = dividerX + gap*1.5;
+  ctx.font = `500 ${dateF}px -apple-system, "Segoe UI", Roboto, sans-serif`;
+  ctx.fillStyle='#ffffff';
+  ctx.fillText(dateStr, textX, divTop + dateF*0.95);
+  ctx.fillText(dayStr,  textX, divBot - dateF*0.15);
+
+  ctx.shadowColor='transparent';
+  ctx.shadowBlur=0;
 }
 
-// ---------- MODE TOGGLE ----------
-modeExifBtn.addEventListener('click', () => {
-  mode = 'exif';
-  modeExifBtn.classList.add('active');
-  modeManualBtn.classList.remove('active');
-  manualFields.style.display = 'none';
+/* ---------- Mode toggle ---------- */
+function setMode(){
+  modeExifBtn.classList.toggle('active', mode==='exif');
+  modeManualBtn.classList.toggle('active', mode==='manual');
   draw();
-});
-modeManualBtn.addEventListener('click', () => {
-  mode = 'manual';
-  modeManualBtn.classList.add('active');
-  modeExifBtn.classList.remove('active');
-  manualFields.style.display = 'block';
-  draw();
-});
+}
+modeExifBtn.onclick = () => { mode='exif'; setMode(); };
+modeManualBtn.onclick = () => { mode='manual'; setMode(); };
 
-[dateInput, timeInput, sizeInput, colorInput].forEach(el => {
-  el.addEventListener('input', draw);
+[dateInput,timeInput,langInput,addrInput,scaleInput,accentInput].forEach(el=>{
+  el.addEventListener('input', () => { if(el!==langInput) mode='manual'===mode?mode:mode; draw(); });
 });
+dateInput.addEventListener('input', ()=>{ mode='manual'; setMode(); });
+timeInput.addEventListener('input', ()=>{ mode='manual'; setMode(); });
 
-// ---------- DOWNLOAD ----------
-downloadBtn.addEventListener('click', () => {
-  const link = document.createElement('a');
-  link.download = 'timestamp-overlay.jpg';
-  link.href = canvas.toDataURL('image/jpeg', 0.95);
-  link.click();
-});
+/* ---------- Download ---------- */
+downloadBtn.onclick = () => {
+  const a=document.createElement('a');
+  a.download='timestamp-'+Date.now()+'.jpg';
+  a.href=canvas.toDataURL('image/jpeg',0.95);
+  a.click();
+};
 </script>
-
 </body>
 </html>
