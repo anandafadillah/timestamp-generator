@@ -6,105 +6,114 @@
 <title>Timestamp Generator</title>
 <style>
   :root{
-    --bg:#101014;
-    --panel:#17171d;
-    --panel-2:#1f1f27;
-    --accent:#f5c518;
-    --accent-dim:#a88a11;
-    --text:#e7e7ea;
-    --text-dim:#83838f;
-    --border:#2c2c36;
+    --bg:#101014; --panel:#17171d; --panel-2:#1f1f27;
+    --accent:#f5c518; --accent-dim:#a88a11;
+    --text:#e7e7ea; --text-dim:#83838f; --border:#2c2c36;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;background:var(--bg);color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-  }
-  header{padding:18px 22px;border-bottom:1px solid var(--border);}
-  header h1{margin:0;font-size:16px;letter-spacing:.5px;font-weight:600;}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+
+  header{padding:16px 22px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  header h1{margin:0;font-size:16px;font-weight:600;}
   header h1 span{color:var(--accent);}
   header p{margin:3px 0 0;font-size:12px;color:var(--text-dim);}
+  .head-actions{display:flex;gap:9px;align-items:center;}
 
-  .layout{display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 66px);}
-  @media(max-width:860px){.layout{grid-template-columns:1fr;}}
+  .layout{display:grid;grid-template-columns:330px 1fr 190px;min-height:calc(100vh - 66px);}
+  @media(max-width:1100px){.layout{grid-template-columns:300px 1fr;}
+    .filmstrip{grid-column:1/-1;border-left:none;border-top:1px solid var(--border);
+      flex-direction:row!important;overflow-x:auto;max-height:150px;}}
+  @media(max-width:800px){.layout{grid-template-columns:1fr;}}
 
-  .panel{
-    background:var(--panel);padding:20px;border-right:1px solid var(--border);
-    display:flex;flex-direction:column;gap:16px;
-  }
-  .field label{
-    display:block;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;
-    color:var(--accent-dim);margin-bottom:7px;font-weight:600;
-  }
-  .drop{
-    border:1.5px dashed var(--border);background:var(--panel-2);
-    padding:22px 12px;text-align:center;cursor:pointer;border-radius:8px;
-    font-size:13px;color:var(--text-dim);transition:.15s;
-  }
+  .panel{background:var(--panel);padding:18px;border-right:1px solid var(--border);
+    display:flex;flex-direction:column;gap:15px;overflow-y:auto;max-height:calc(100vh - 66px);}
+
+  .sec-title{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;
+    color:var(--accent);font-weight:700;padding-bottom:6px;border-bottom:1px solid var(--border);}
+  .field label{display:block;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;
+    color:var(--accent-dim);margin-bottom:6px;font-weight:600;}
+
+  .drop{border:1.5px dashed var(--border);background:var(--panel-2);padding:20px 12px;
+    text-align:center;cursor:pointer;border-radius:8px;font-size:13px;color:var(--text-dim);transition:.15s;}
   .drop:hover,.drop.drag{border-color:var(--accent);color:var(--accent);}
   input[type=file]{display:none;}
 
-  .seg{display:flex;border:1px solid var(--border);border-radius:7px;overflow:hidden;}
-  .seg button{
-    flex:1;background:var(--panel-2);color:var(--text-dim);border:none;
-    padding:9px 6px;font:inherit;font-size:12px;cursor:pointer;
-  }
-  .seg button.active{background:var(--accent);color:#1a1500;font-weight:600;}
-
-  input[type=date],input[type=time],textarea,select{
-    width:100%;background:var(--panel-2);border:1px solid var(--border);
-    color:var(--text);font:inherit;font-size:13px;padding:9px;border-radius:6px;
-  }
-  textarea{resize:vertical;min-height:60px;line-height:1.4;}
+  input[type=date],input[type=time],textarea,select{width:100%;background:var(--panel-2);
+    border:1px solid var(--border);color:var(--text);font:inherit;font-size:13px;
+    padding:9px;border-radius:6px;}
+  textarea{resize:vertical;min-height:58px;line-height:1.4;}
   input[type=range]{width:100%;accent-color:var(--accent);}
-  input[type=color]{
-    width:100%;height:36px;background:var(--panel-2);
-    border:1px solid var(--border);border-radius:6px;padding:2px;cursor:pointer;
-  }
-  .row{display:flex;gap:9px;}
-  .row>div{flex:1;}
-  .hint{font-size:11px;color:var(--text-dim);margin-top:6px;line-height:1.4;}
+  input[type=color]{width:100%;height:34px;background:var(--panel-2);
+    border:1px solid var(--border);border-radius:6px;padding:2px;cursor:pointer;}
+  .row{display:flex;gap:9px;} .row>div{flex:1;}
+  .hint{font-size:11px;color:var(--text-dim);margin-top:5px;line-height:1.45;}
 
-  .btn{
-    background:var(--accent);color:#1a1500;border:none;padding:12px;
-    font:inherit;font-weight:700;font-size:13px;border-radius:7px;cursor:pointer;
-  }
+  .btn{background:var(--accent);color:#1a1500;border:none;padding:11px;
+    font:inherit;font-weight:700;font-size:12.5px;border-radius:7px;cursor:pointer;white-space:nowrap;}
   .btn:disabled{background:var(--panel-2);color:var(--text-dim);cursor:not-allowed;}
   .btn:hover:not(:disabled){filter:brightness(1.08);}
+  .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text-dim);font-weight:500;}
+  .btn.ghost:hover:not(:disabled){border-color:var(--accent);color:var(--accent);filter:none;}
+  .btn.sm{padding:8px 10px;font-size:11.5px;}
 
-  .stage{
-    display:flex;align-items:center;justify-content:center;padding:28px;
-    background:repeating-conic-gradient(#15151a 0% 25%,#131318 0% 50%) 50%/22px 22px;
-  }
+  .stage{display:flex;align-items:center;justify-content:center;padding:24px;
+    background:repeating-conic-gradient(#15151a 0% 25%,#131318 0% 50%) 50%/22px 22px;}
   .canvas-wrap{max-width:100%;box-shadow:0 18px 50px rgba(0,0,0,.55);}
-  canvas{display:block;max-width:100%;max-height:75vh;height:auto;background:#000;}
-  .placeholder{color:var(--text-dim);font-size:13px;}
+  canvas{display:block;max-width:100%;max-height:72vh;height:auto;background:#000;}
+  .placeholder{color:var(--text-dim);font-size:13px;text-align:center;line-height:1.6;}
+
+  .filmstrip{background:var(--panel);border-left:1px solid var(--border);
+    padding:12px;display:flex;flex-direction:column;gap:9px;overflow-y:auto;
+    max-height:calc(100vh - 66px);}
+  .film-head{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;
+    color:var(--text-dim);font-weight:700;}
+  .thumb{position:relative;border:2px solid transparent;border-radius:7px;
+    overflow:hidden;cursor:pointer;background:#000;flex-shrink:0;}
+  .thumb img{width:100%;height:100px;object-fit:cover;display:block;opacity:.65;transition:.15s;}
+  .thumb.active{border-color:var(--accent);}
+  .thumb.active img,.thumb:hover img{opacity:1;}
+  .thumb .n{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.75);
+    color:#fff;font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;}
+  .thumb .x{position:absolute;top:5px;right:5px;background:rgba(0,0,0,.75);
+    color:#fff;border:none;width:20px;height:20px;border-radius:4px;
+    cursor:pointer;font-size:13px;line-height:1;padding:0;}
+  .thumb .x:hover{background:#c0392b;}
+
+  .progress{position:fixed;inset:0;background:rgba(10,10,14,.92);z-index:50;
+    display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+  .progress.show{display:flex;}
+  .progress .bar{width:260px;height:5px;background:var(--panel-2);border-radius:3px;overflow:hidden;}
+  .progress .fill{height:100%;background:var(--accent);width:0%;transition:width .2s;}
+  .progress .lbl{font-size:13px;color:var(--text-dim);}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Timestamp <span>Generator</span></h1>
-  <p>Tempel jam, tanggal, dan lokasi ke foto</p>
+  <div>
+    <h1>Timestamp <span>Generator</span></h1>
+    <p>Batch overlay jam, tanggal &amp; lokasi ke foto</p>
+  </div>
+  <div class="head-actions">
+    <button class="btn ghost sm" id="dlOneBtn" disabled>Download Foto Ini</button>
+    <button class="btn" id="dlAllBtn" disabled>Download Semua (ZIP)</button>
+  </div>
 </header>
 
 <div class="layout">
+  <!-- ============ PANEL KIRI ============ -->
   <div class="panel">
-
     <div class="field">
-      <label>Foto</label>
-      <div class="drop" id="dropZone">Klik atau drag foto ke sini<div class="hint">JPG / PNG</div></div>
-      <input type="file" id="fileInput" accept="image/*">
-    </div>
-
-    <div class="field">
-      <label>Sumber Waktu</label>
-      <div class="seg">
-        <button id="modeExif" class="active">EXIF Foto</button>
-        <button id="modeManual">Manual</button>
+      <div class="drop" id="dropZone">
+        Klik atau drag foto ke sini
+        <div class="hint">Bisa pilih banyak sekaligus &middot; JPG / PNG</div>
       </div>
-      <div class="hint" id="exifStatus">Upload foto dulu untuk baca EXIF.</div>
+      <input type="file" id="fileInput" accept="image/*" multiple>
     </div>
+
+    <div class="sec-title">Pengaturan Foto Terpilih</div>
 
     <div class="field">
       <label>Tanggal &amp; Jam</label>
@@ -112,7 +121,21 @@
         <div><input type="date" id="dateInput"></div>
         <div><input type="time" id="timeInput"></div>
       </div>
+      <div class="hint" id="exifStatus">Belum ada foto dipilih.</div>
+      <button class="btn ghost sm" id="applyDateAll" style="margin-top:8px;width:100%;">
+        Terapkan tanggal ini ke semua foto
+      </button>
     </div>
+
+    <div class="field">
+      <label>Alamat / Lokasi</label>
+      <textarea id="addrInput" placeholder="RT.7/RW.1, Cipayung, East Jakarta City, Jakarta 13840"></textarea>
+      <button class="btn ghost sm" id="applyAddrAll" style="margin-top:8px;width:100%;">
+        Terapkan alamat ini ke semua foto
+      </button>
+    </div>
+
+    <div class="sec-title">Pengaturan Global</div>
 
     <div class="field">
       <label>Bahasa Tanggal</label>
@@ -120,12 +143,6 @@
         <option value="en">English — Mon, 31 Aug 2026</option>
         <option value="id">Indonesia — Sen, 31 Agu 2026</option>
       </select>
-    </div>
-
-    <div class="field">
-      <label>Alamat / Lokasi</label>
-      <textarea id="addrInput" placeholder="RT.7/RW.1, Cipayung, East Jakarta City, Jakarta 13840"></textarea>
-      <div class="hint">Otomatis wrap ke baris baru kalau kepanjangan.</div>
     </div>
 
     <div class="field">
@@ -138,25 +155,40 @@
       <input type="color" id="accentInput" value="#f5c518">
     </div>
 
-    <button class="btn" id="downloadBtn" disabled>Download Hasil</button>
+    <button class="btn ghost sm" id="clearBtn">Hapus Semua Foto</button>
   </div>
 
+  <!-- ============ PREVIEW ============ -->
   <div class="stage">
     <div class="canvas-wrap" id="canvasWrap">
-      <div class="placeholder">Belum ada foto</div>
+      <div class="placeholder">Belum ada foto<br><span style="font-size:12px;">Upload beberapa foto sekaligus untuk mulai</span></div>
     </div>
   </div>
+
+  <!-- ============ FILMSTRIP ============ -->
+  <div class="filmstrip" id="filmstrip">
+    <div class="film-head" id="filmHead">0 Foto</div>
+  </div>
+</div>
+
+<div class="progress" id="progressBox">
+  <div class="lbl" id="progressLbl">Memproses…</div>
+  <div class="bar"><div class="fill" id="progressFill"></div></div>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
 const fileInput=$('fileInput'), dropZone=$('dropZone'), canvasWrap=$('canvasWrap');
-const modeExifBtn=$('modeExif'), modeManualBtn=$('modeManual'), exifStatus=$('exifStatus');
-const dateInput=$('dateInput'), timeInput=$('timeInput'), langInput=$('langInput');
-const addrInput=$('addrInput'), scaleInput=$('scaleInput'), accentInput=$('accentInput');
-const downloadBtn=$('downloadBtn');
+const dateInput=$('dateInput'), timeInput=$('timeInput'), addrInput=$('addrInput');
+const langInput=$('langInput'), scaleInput=$('scaleInput'), accentInput=$('accentInput');
+const exifStatus=$('exifStatus'), filmstrip=$('filmstrip'), filmHead=$('filmHead');
+const dlOneBtn=$('dlOneBtn'), dlAllBtn=$('dlAllBtn'), clearBtn=$('clearBtn');
+const applyDateAll=$('applyDateAll'), applyAddrAll=$('applyAddrAll');
+const progressBox=$('progressBox'), progressFill=$('progressFill'), progressLbl=$('progressLbl');
 
-let img=null, canvas=null, ctx=null, mode='exif', exifDate=null;
+let photos = [];      // {id, name, url, img, date, addr, hasExif}
+let selectedId = null;
+let uid = 0;
 
 const DAYS = {
   en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
@@ -167,10 +199,9 @@ const MONTHS = {
   id:['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des']
 };
 
-/* ---------- EXIF parser (JPEG APP1) ---------- */
+/* ================= EXIF PARSER ================= */
 function readIFD(view, tiff, ifd, little){
-  const out={};
-  const n=view.getUint16(ifd, little);
+  const out={}, n=view.getUint16(ifd, little);
   for(let i=0;i<n;i++){
     const e=ifd+2+i*12;
     const tag=view.getUint16(e,little), type=view.getUint16(e+2,little), count=view.getUint32(e+4,little);
@@ -198,8 +229,7 @@ function parseExifDate(buffer){
         let sig='';
         for(let i=0;i<4;i++) sig+=String.fromCharCode(view.getUint8(start+i));
         if(sig!=='Exif') return null;
-        const tiff=start+6;
-        const little=view.getUint16(tiff,false)===0x4949;
+        const tiff=start+6, little=view.getUint16(tiff,false)===0x4949;
         const ifd0=readIFD(view,tiff,tiff+view.getUint32(tiff+4,little),little);
         if(ifd0[0x8769]){
           const sub=readIFD(view,tiff,tiff+ifd0[0x8769],little);
@@ -212,206 +242,392 @@ function parseExifDate(buffer){
   }catch(e){}
   return null;
 }
+function exifToDate(raw){
+  const m = raw && raw.match(/(\d{4}):(\d{2}):(\d{2})\s(\d{2}):(\d{2})/);
+  return m ? new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]) : null;
+}
 
-/* ---------- File handling ---------- */
+/* ================= UPLOAD ================= */
 dropZone.onclick = () => fileInput.click();
 dropZone.ondragover = e => { e.preventDefault(); dropZone.classList.add('drag'); };
 dropZone.ondragleave = () => dropZone.classList.remove('drag');
 dropZone.ondrop = e => {
   e.preventDefault(); dropZone.classList.remove('drag');
-  if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  addFiles([...e.dataTransfer.files]);
 };
-fileInput.onchange = e => { if(e.target.files.length) handleFile(e.target.files[0]); };
+fileInput.onchange = e => { addFiles([...e.target.files]); fileInput.value=''; };
 
-function handleFile(file){
-  if(!file.type.startsWith('image/')) return;
-  const reader=new FileReader();
-  reader.onload = e => {
-    const buf = e.target.result;
-    const raw = parseExifDate(buf.slice(0));
-    exifDate = null;
+function addFiles(files){
+  const imgs = files.filter(f => f.type.startsWith('image/'));
+  if(!imgs.length) return;
+  const lastAddr = photos.length ? photos[photos.length-1].addr : addrInput.value.trim();
+  let pending = imgs.length;
 
-    if(raw){
-      const m = raw.match(/(\d{4}):(\d{2}):(\d{2})\s(\d{2}):(\d{2})/);
-      if(m){
-        exifDate = new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]);
-        exifStatus.textContent = 'EXIF ditemukan: ' + raw;
-        dateInput.value = `${m[1]}-${m[2]}-${m[3]}`;
-        timeInput.value = `${m[4]}:${m[5]}`;
-      }
-    }
-    if(!exifDate){
-      exifStatus.textContent = 'EXIF tidak ada di foto ini — pakai mode Manual.';
-      const now=new Date();
-      if(!dateInput.value) dateInput.value = now.toISOString().slice(0,10);
-      if(!timeInput.value) timeInput.value = now.toTimeString().slice(0,5);
-      mode='manual'; setMode();
-    }
-
-    const url = URL.createObjectURL(new Blob([buf]));
-    const image = new Image();
-    image.onload = () => { img=image; setupCanvas(); draw(); URL.revokeObjectURL(url); };
-    image.src = url;
-  };
-  reader.readAsArrayBuffer(file);
+  imgs.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const buf = e.target.result;
+      const exifDate = exifToDate(parseExifDate(buf.slice(0)));
+      const url = URL.createObjectURL(new Blob([buf], {type:file.type}));
+      const image = new Image();
+      image.onload = () => {
+        photos.push({
+          id: ++uid,
+          name: file.name,
+          url, img: image,
+          date: exifDate || new Date(),
+          addr: lastAddr,
+          hasExif: !!exifDate
+        });
+        if(--pending === 0) finishAdd();
+      };
+      image.onerror = () => { if(--pending === 0) finishAdd(); };
+      image.src = url;
+    };
+    reader.readAsArrayBuffer(file);
+  });
 }
 
-function setupCanvas(){
-  canvasWrap.innerHTML='';
-  canvas=document.createElement('canvas');
-  canvas.width=img.naturalWidth; canvas.height=img.naturalHeight;
-  ctx=canvas.getContext('2d');
-  canvasWrap.appendChild(canvas);
-  downloadBtn.disabled=false;
+function finishAdd(){
+  renderFilmstrip();
+  if(!selectedId && photos.length) selectPhoto(photos[0].id);
+  updateButtons();
 }
 
-function currentDate(){
-  if(mode==='exif' && exifDate) return exifDate;
-  if(!dateInput.value) return null;
-  const [y,mo,d]=dateInput.value.split('-').map(Number);
-  const [h,mi]=(timeInput.value||'00:00').split(':').map(Number);
-  return new Date(y,mo-1,d,h,mi);
+/* ================= FILMSTRIP ================= */
+function renderFilmstrip(){
+  filmHead.textContent = photos.length + ' Foto';
+  filmstrip.querySelectorAll('.thumb').forEach(n=>n.remove());
+  photos.forEach((p,i) => {
+    const div = document.createElement('div');
+    div.className = 'thumb' + (p.id===selectedId ? ' active' : '');
+    div.innerHTML = `<img src="${p.url}" alt=""><span class="n">${i+1}</span><button class="x">&times;</button>`;
+    div.querySelector('img').onclick = () => selectPhoto(p.id);
+    div.querySelector('.n').onclick = () => selectPhoto(p.id);
+    div.querySelector('.x').onclick = e => { e.stopPropagation(); removePhoto(p.id); };
+    filmstrip.appendChild(div);
+  });
 }
 
+function removePhoto(id){
+  const i = photos.findIndex(p=>p.id===id);
+  if(i<0) return;
+  URL.revokeObjectURL(photos[i].url);
+  photos.splice(i,1);
+  if(selectedId===id) selectedId = photos.length ? photos[Math.min(i,photos.length-1)].id : null;
+  renderFilmstrip();
+  selectedId ? selectPhoto(selectedId) : clearPreview();
+  updateButtons();
+}
+
+clearBtn.onclick = () => {
+  photos.forEach(p => URL.revokeObjectURL(p.url));
+  photos = []; selectedId = null;
+  renderFilmstrip(); clearPreview(); updateButtons();
+};
+
+function clearPreview(){
+  canvasWrap.innerHTML = '<div class="placeholder">Belum ada foto<br><span style="font-size:12px;">Upload beberapa foto sekaligus untuk mulai</span></div>';
+  exifStatus.textContent = 'Belum ada foto dipilih.';
+}
+
+function getSelected(){ return photos.find(p=>p.id===selectedId) || null; }
+
+function selectPhoto(id){
+  selectedId = id;
+  const p = getSelected();
+  if(!p) return;
+  const d = p.date;
+  dateInput.value = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  timeInput.value = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  addrInput.value = p.addr;
+  exifStatus.textContent = p.hasExif
+    ? `${p.name} — tanggal dari EXIF foto.`
+    : `${p.name} — tidak ada EXIF, pakai input manual.`;
+  renderFilmstrip();
+  drawPreview();
+  updateButtons();
+}
+
+function updateButtons(){
+  dlOneBtn.disabled = !getSelected();
+  dlAllBtn.disabled = photos.length === 0;
+}
+
+/* ================= DRAW ENGINE ================= */
 function wrapText(ctx, text, maxWidth){
-  const words=text.split(' '), lines=[];
-  let line='';
+  const words = text.split(' '), lines = [];
+  let line = '';
   for(const w of words){
     const test = line ? line+' '+w : w;
-    if(ctx.measureText(test).width > maxWidth && line){ lines.push(line); line=w; }
-    else line=test;
+    if(ctx.measureText(test).width > maxWidth && line){ lines.push(line); line = w; }
+    else line = test;
   }
   if(line) lines.push(line);
   return lines;
 }
 
-/* ---------- Draw overlay ---------- */
-function draw(){
-  if(!img||!ctx) return;
-  ctx.drawImage(img,0,0,canvas.width,canvas.height);
-
-  const d = currentDate();
-  if(!d) return;
+function renderPhoto(ctx, W, H, img, date, addr){
+  ctx.drawImage(img, 0, 0, W, H);
+  if(!date) return;
 
   const lang = langInput.value;
-  const scale = (scaleInput.value/100) * (canvas.width/1200);
+  const scale = (scaleInput.value/100) * (W/1200);
   const accent = accentInput.value;
 
-  const pad     = 40*scale;
-  const timeF   = 92*scale;   // jam besar
-  const dateF   = 34*scale;
-  const addrF   = 33*scale;
-  const gap     = 14*scale;
+  const pad = 40*scale, timeF = 92*scale, dateF = 34*scale, addrF = 33*scale, gap = 14*scale;
 
-  const timeStr = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
-  const dateStr = `${d.getDate()} ${MONTHS[lang][d.getMonth()]} ${d.getFullYear()}`;
-  const dayStr  = DAYS[lang][d.getDay()];
-  const addr    = addrInput.value.trim();
+  const timeStr = String(date.getHours()).padStart(2,'0')+':'+String(date.getMinutes()).padStart(2,'0');
+  const dateStr = `${date.getDate()} ${MONTHS[lang][date.getMonth()]} ${date.getFullYear()}`;
+  const dayStr  = DAYS[lang][date.getDay()];
+  addr = (addr||'').trim();
 
-  // ukur tinggi blok alamat
   ctx.font = `500 ${addrF}px -apple-system, "Segoe UI", Roboto, sans-serif`;
-  const addrLines = addr ? wrapText(ctx, addr, canvas.width - pad*2) : [];
+  const addrLines = addr ? wrapText(ctx, addr, W - pad*2) : [];
   const addrLineH = addrF*1.28;
 
-  const timeBlockH = timeF*1.05;
-  const addrBlockH = addrLines.length ? addrLines.length*addrLineH + gap : 0;
-  const rulePad    = gap*1.4;
-  const blockH     = timeBlockH + addrBlockH + rulePad + pad;
+  const blockH = timeF*1.05 + (addrLines.length ? addrLines.length*addrLineH + gap : 0) + gap*1.4 + pad;
 
-  // scrim gelap biar teks kebaca
-  const scrimTop = canvas.height - blockH - pad*0.8;
-  const grad = ctx.createLinearGradient(0, scrimTop, 0, canvas.height);
+  const scrimTop = H - blockH - pad*0.8;
+  const grad = ctx.createLinearGradient(0, scrimTop, 0, H);
   grad.addColorStop(0,'rgba(0,0,0,0)');
   grad.addColorStop(1,'rgba(0,0,0,0.62)');
   ctx.fillStyle = grad;
-  ctx.fillRect(0, scrimTop, canvas.width, canvas.height - scrimTop);
+  ctx.fillRect(0, scrimTop, W, H - scrimTop);
 
-  ctx.textAlign='left';
-  ctx.shadowColor='rgba(0,0,0,0.55)';
-  ctx.shadowBlur=6*scale;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
 
-  let y = canvas.height - pad;
+  let y = H - pad;
 
-  // garis pembatas horizontal (paling bawah)
-  ctx.shadowBlur=0;
-  ctx.strokeStyle='rgba(255,255,255,0.45)';
-  ctx.lineWidth=Math.max(1, 1.6*scale);
-  ctx.beginPath();
-  ctx.moveTo(pad, y);
-  ctx.lineTo(canvas.width - pad, y);
-  ctx.stroke();
-  ctx.shadowColor='rgba(0,0,0,0.55)';
-  ctx.shadowBlur=6*scale;
+  // garis pembatas horizontal
+  ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+  ctx.lineWidth = Math.max(1, 1.6*scale);
+  ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(W - pad, y); ctx.stroke();
 
-  y -= rulePad;
+  y -= gap*1.4;
 
-  // alamat (dari bawah ke atas)
+  ctx.shadowColor = 'rgba(0,0,0,0.55)';
+  ctx.shadowBlur = 6*scale;
+
+  // alamat
   if(addrLines.length){
     ctx.font = `500 ${addrF}px -apple-system, "Segoe UI", Roboto, sans-serif`;
-    ctx.fillStyle='#ffffff';
-    ctx.textBaseline='alphabetic';
-    for(let i=addrLines.length-1;i>=0;i--){
-      ctx.fillText(addrLines[i], pad, y);
-      y -= addrLineH;
-    }
+    ctx.fillStyle = '#ffffff';
+    for(let i=addrLines.length-1;i>=0;i--){ ctx.fillText(addrLines[i], pad, y); y -= addrLineH; }
     y -= gap*0.3;
   }
 
   // jam besar
   ctx.font = `700 ${timeF}px -apple-system, "Segoe UI", Roboto, sans-serif`;
-  ctx.textBaseline='alphabetic';
-  ctx.fillStyle='#ffffff';
-  const timeBaseline = y;
-  ctx.fillText(timeStr, pad, timeBaseline);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText(timeStr, pad, y);
   const timeW = ctx.measureText(timeStr).width;
 
   // garis pembatas vertikal
-  const dividerX = pad + timeW + gap*1.6;
-  const divTop = timeBaseline - timeF*0.80;
-  const divBot = timeBaseline + timeF*0.06;
-  ctx.shadowBlur=0;
-  ctx.strokeStyle=accent;
-  ctx.lineWidth=Math.max(2, 5*scale);
-  ctx.beginPath();
-  ctx.moveTo(dividerX, divTop);
-  ctx.lineTo(dividerX, divBot);
-  ctx.stroke();
-  ctx.shadowColor='rgba(0,0,0,0.55)';
-  ctx.shadowBlur=6*scale;
+  const divX = pad + timeW + gap*1.6;
+  const divTop = y - timeF*0.80, divBot = y + timeF*0.06;
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = Math.max(2, 5*scale);
+  ctx.beginPath(); ctx.moveTo(divX, divTop); ctx.lineTo(divX, divBot); ctx.stroke();
+  ctx.shadowColor = 'rgba(0,0,0,0.55)';
+  ctx.shadowBlur = 6*scale;
 
-  // tanggal + hari di kanan divider
-  const textX = dividerX + gap*1.5;
+  // tanggal + hari
+  const tx = divX + gap*1.5;
   ctx.font = `500 ${dateF}px -apple-system, "Segoe UI", Roboto, sans-serif`;
-  ctx.fillStyle='#ffffff';
-  ctx.fillText(dateStr, textX, divTop + dateF*0.95);
-  ctx.fillText(dayStr,  textX, divBot - dateF*0.15);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText(dateStr, tx, divTop + dateF*0.95);
+  ctx.fillText(dayStr,  tx, divBot - dateF*0.15);
 
-  ctx.shadowColor='transparent';
-  ctx.shadowBlur=0;
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
 }
 
-/* ---------- Mode toggle ---------- */
-function setMode(){
-  modeExifBtn.classList.toggle('active', mode==='exif');
-  modeManualBtn.classList.toggle('active', mode==='manual');
-  draw();
+function drawPreview(){
+  const p = getSelected();
+  if(!p) return;
+  let canvas = canvasWrap.querySelector('canvas');
+  if(!canvas || canvas.width !== p.img.naturalWidth || canvas.height !== p.img.naturalHeight){
+    canvasWrap.innerHTML = '';
+    canvas = document.createElement('canvas');
+    canvas.width = p.img.naturalWidth;
+    canvas.height = p.img.naturalHeight;
+    canvasWrap.appendChild(canvas);
+  }
+  renderPhoto(canvas.getContext('2d'), canvas.width, canvas.height, p.img, p.date, p.addr);
 }
-modeExifBtn.onclick = () => { mode='exif'; setMode(); };
-modeManualBtn.onclick = () => { mode='manual'; setMode(); };
 
-[dateInput,timeInput,langInput,addrInput,scaleInput,accentInput].forEach(el=>{
-  el.addEventListener('input', () => { if(el!==langInput) mode='manual'===mode?mode:mode; draw(); });
-});
-dateInput.addEventListener('input', ()=>{ mode='manual'; setMode(); });
-timeInput.addEventListener('input', ()=>{ mode='manual'; setMode(); });
+/* ================= INPUT BINDING ================= */
+function syncDateFromInputs(){
+  const p = getSelected();
+  if(!p || !dateInput.value) return;
+  const [y,mo,d] = dateInput.value.split('-').map(Number);
+  const [h,mi] = (timeInput.value||'00:00').split(':').map(Number);
+  p.date = new Date(y, mo-1, d, h, mi);
+  p.hasExif = false;
+  drawPreview();
+}
+dateInput.oninput = timeInput.oninput = syncDateFromInputs;
 
-/* ---------- Download ---------- */
-downloadBtn.onclick = () => {
-  const a=document.createElement('a');
-  a.download='timestamp-'+Date.now()+'.jpg';
-  a.href=canvas.toDataURL('image/jpeg',0.95);
-  a.click();
+addrInput.oninput = () => {
+  const p = getSelected();
+  if(!p) return;
+  p.addr = addrInput.value;
+  drawPreview();
 };
+
+[langInput, scaleInput, accentInput].forEach(el => el.oninput = drawPreview);
+
+applyDateAll.onclick = () => {
+  const p = getSelected();
+  if(!p) return;
+  photos.forEach(x => { x.date = new Date(p.date); x.hasExif = false; });
+  drawPreview();
+  exifStatus.textContent = `Tanggal diterapkan ke ${photos.length} foto.`;
+};
+
+applyAddrAll.onclick = () => {
+  const p = getSelected();
+  if(!p) return;
+  photos.forEach(x => x.addr = p.addr);
+  drawPreview();
+  exifStatus.textContent = `Alamat diterapkan ke ${photos.length} foto.`;
+};
+
+/* ================= EXPORT ================= */
+function renderToBlob(p){
+  return new Promise(resolve => {
+    const c = document.createElement('canvas');
+    c.width = p.img.naturalWidth;
+    c.height = p.img.naturalHeight;
+    renderPhoto(c.getContext('2d'), c.width, c.height, p.img, p.date, p.addr);
+    c.toBlob(b => resolve(b), 'image/jpeg', 0.95);
+  });
+}
+
+function saveBlob(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function outName(p, i){
+  const base = p.name.replace(/\.[^.]+$/, '');
+  return `${String(i+1).padStart(2,'0')}-${base}-timestamp.jpg`;
+}
+
+dlOneBtn.onclick = async () => {
+  const p = getSelected();
+  if(!p) return;
+  const blob = await renderToBlob(p);
+  saveBlob(blob, outName(p, photos.indexOf(p)));
+};
+
+dlAllBtn.onclick = async () => {
+  if(!photos.length) return;
+  progressBox.classList.add('show');
+  const entries = [];
+  for(let i=0;i<photos.length;i++){
+    progressLbl.textContent = `Memproses ${i+1} / ${photos.length}…`;
+    progressFill.style.width = ((i/photos.length)*100)+'%';
+    await new Promise(r => setTimeout(r, 10));
+    const blob = await renderToBlob(photos[i]);
+    const buf = await blob.arrayBuffer();
+    entries.push({ name: outName(photos[i], i), data: new Uint8Array(buf) });
+  }
+  progressLbl.textContent = 'Membuat ZIP…';
+  progressFill.style.width = '100%';
+  await new Promise(r => setTimeout(r, 30));
+  saveBlob(buildZip(entries), 'timestamp-photos.zip');
+  progressBox.classList.remove('show');
+  progressFill.style.width = '0%';
+};
+
+/* ---------- ZIP writer (store, no library) ---------- */
+const CRC_TABLE = (() => {
+  const t = new Uint32Array(256);
+  for(let i=0;i<256;i++){
+    let c = i;
+    for(let k=0;k<8;k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    t[i] = c >>> 0;
+  }
+  return t;
+})();
+function crc32(buf){
+  let c = 0xFFFFFFFF;
+  for(let i=0;i<buf.length;i++) c = CRC_TABLE[(c ^ buf[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+
+function buildZip(entries){
+  const enc = new TextEncoder();
+  const parts = [], central = [];
+  let offset = 0;
+
+  const now = new Date();
+  const dosTime = ((now.getHours()<<11) | (now.getMinutes()<<5) | Math.floor(now.getSeconds()/2)) & 0xFFFF;
+  const dosDate = (((now.getFullYear()-1980)<<9) | ((now.getMonth()+1)<<5) | now.getDate()) & 0xFFFF;
+
+  for(const e of entries){
+    const nameBytes = enc.encode(e.name);
+    const crc = crc32(e.data);
+    const size = e.data.length;
+
+    const local = new DataView(new ArrayBuffer(30));
+    local.setUint32(0, 0x04034b50, true);
+    local.setUint16(4, 20, true);
+    local.setUint16(6, 0, true);
+    local.setUint16(8, 0, true);            // method 0 = store
+    local.setUint16(10, dosTime, true);
+    local.setUint16(12, dosDate, true);
+    local.setUint32(14, crc, true);
+    local.setUint32(18, size, true);
+    local.setUint32(22, size, true);
+    local.setUint16(26, nameBytes.length, true);
+    local.setUint16(28, 0, true);
+
+    parts.push(new Uint8Array(local.buffer), nameBytes, e.data);
+
+    const cd = new DataView(new ArrayBuffer(46));
+    cd.setUint32(0, 0x02014b50, true);
+    cd.setUint16(4, 20, true);
+    cd.setUint16(6, 20, true);
+    cd.setUint16(8, 0, true);
+    cd.setUint16(10, 0, true);
+    cd.setUint16(12, dosTime, true);
+    cd.setUint16(14, dosDate, true);
+    cd.setUint32(16, crc, true);
+    cd.setUint32(20, size, true);
+    cd.setUint32(24, size, true);
+    cd.setUint16(28, nameBytes.length, true);
+    cd.setUint16(30, 0, true);
+    cd.setUint16(32, 0, true);
+    cd.setUint16(34, 0, true);
+    cd.setUint16(36, 0, true);
+    cd.setUint32(38, 0, true);
+    cd.setUint32(42, offset, true);
+    central.push(new Uint8Array(cd.buffer), nameBytes);
+
+    offset += 30 + nameBytes.length + size;
+  }
+
+  const centralSize = central.reduce((s,a)=>s+a.length, 0);
+  const eocd = new DataView(new ArrayBuffer(22));
+  eocd.setUint32(0, 0x06054b50, true);
+  eocd.setUint16(4, 0, true);
+  eocd.setUint16(6, 0, true);
+  eocd.setUint16(8, entries.length, true);
+  eocd.setUint16(10, entries.length, true);
+  eocd.setUint32(12, centralSize, true);
+  eocd.setUint32(16, offset, true);
+  eocd.setUint16(20, 0, true);
+
+  return new Blob([...parts, ...central, new Uint8Array(eocd.buffer)], {type:'application/zip'});
+}
 </script>
 </body>
 </html>
